@@ -1,0 +1,40 @@
+<!DOCTYPE HTML> 
+
+<html>  
+   <head> 
+  
+        <!-- 
+            # ticket.cgi server in perl
+
+            #!/usr/bin/perl  
+            print "Content-Type: text/event-stream\n\n";  
+
+            while(true) { 
+            print "Event: server-time\n"; 
+            $time = localtime(); 
+            print "Data: $time\n"; 
+            sleep(5); 
+            } 
+        -->
+      <script type = "text/javascript"> 
+         document.getElementsByTagName("eventsource")[0].addEventListener("server-time", 
+         eventHandler, false); 
+    
+         function eventHandler(event) { 
+
+            // Alert time sent by the server 
+            document.querySelector('#ticker').innerHTML = event.data; 
+         } 
+      </script> 
+   </head> 
+  
+   <body> 
+      <div id = "sse"> 
+         <eventsource src = "/cgi-bin/ticker.cgi" /> 
+      </div> 
+   
+      <div id = "ticker" name = "ticker"> 
+         [TIME] 
+      </div> 
+   </body> 
+</html>
