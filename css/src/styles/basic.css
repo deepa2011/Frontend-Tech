@@ -1,0 +1,41 @@
+* {
+    text-align: center;
+    color: blue;
+}
+
+body {
+    background-color: lightblue;
+    color: black;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+}
+
+p {
+    font-family: verdana;
+    font-size: 20px;
+    border-top: 20px;
+    border-right: 20px;
+    border-bottom: 20px;
+    border-left: 20px;
+    border: 20px;
+}
+
+#abc {
+
+}
+
+.abc {
+
+}
+
+p.abc {
+    font-family: Arial;
+    font-size: 24px;
+}
+
+table::after{
+
+}
