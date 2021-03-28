@@ -444,3 +444,11 @@ syntax:
 Also in <link> element
 
 <link rel="stylesheet" media="mediatype and|not|only (expressions)" href="print.css">
+
+### CSS Extension
+
+Applications based on WebKit or Blink, such as Safari and Chrome, support a number of special WebKit extensions to CSS. These extensions are generally prefixed with -webkit-. Most -webkit- prefixed properties also work with an -apple- prefix. A few are prefixed with -epub-.
+
+Webkit is an HTML rendering engine used by Chrome and Safari. ... Webkit is the html/css rendering engine used in Apple's Safari browser, and in Google's Chrome. css values prefixes with -webkit- are webkit-specific, they're usually CSS3 or other non-standardised features.
+
+These are the vendor-prefixed properties offered by the relevant rendering engines ( -webkit for Chrome, Safari; -moz for Firefox, -o for Opera, -ms for Internet Explorer). Typically they're used to implement new, or proprietary CSS features, prior to final clarification/definition by the W3.
