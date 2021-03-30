@@ -270,6 +270,14 @@ a:visited - a link the user has visited
 a:hover - a link when the user mouses over it
 a:active - a link the moment it is clicked
 
+a:link {
+  color: red
+}
+
+a:visited {
+  color: blue
+}
+
 ### Display
 
 The display property is the most important CSS property for controlling layout.
@@ -300,6 +308,13 @@ Examples of inline elements:
 <img>
 
 display: none; is commonly used with JavaScript to hide and show elements without deleting and recreating them.
+
+<div id="manager"></div>
+<div id="employee"></div>
+
+#manager {
+  display: none;
+}
 
 ### Position
 
