@@ -174,3 +174,507 @@ let name = "John";
 
 // embed a variable
 alert( `Hello, ${name}!` ); // Hello, John!
+alert(`sum: ${2+3}`); // sum: 5
+
+- Boolean: has only two values true and false
+
+- "null" value
+
+In JavaScript, null is not a “reference to a non-existing object” or a “null pointer” like in some other languages.
+
+It’s just a special value which represents “nothing”, “empty” or “value unknown”.
+
+let name = null;
+
+- "undefined" value
+
+The meaning of undefined is “value is not assigned”.
+
+If a variable is declared, but not assigned, then its value is undefined:
+
+let age; // undefined at this step
+alert(age) // displays "undefined"
+
+- Objects
+
+The object type is special.
+
+All other types are called “primitive” because their values can contain only a single thing (be it a string or a number or whatever). In contrast, objects are used to store collections of data and more complex entities.
+
+- Symbol
+symbol for unique identifiers.
+
+- typeof operator
+
+The typeof operator returns the type of the argument. It supports two forms of syntax:
+
+As an operator: typeof x
+As a function: typeof(x)
+
+Ex:
+typeof 0 // "number"
+typeof 10n // "bigint"
+typeof true // "boolean"
+typeof "foo" // "string"
+typeof Math // "object", built-in object
+typeof alert // "function" 
+
+## Interaction: alert, prompt, confirm
+
+alert shows a message and waits for the user to press “OK”.
+  alert("hello")
+
+prompt accepts two arguments: title and default value for input field
+  result = prompt(title, [default]);
+  result = prompt("How old are you?", 100);
+
+confirm shows a modal window with a question and two buttons: OK and Cancel.
+  result = confirm(question);
+The result is true if OK is pressed and false otherwise.
+
+
+  let isBoss = confirm("Are you ok to exit?");
+
+
+## Type Conversions
+
+String(value) function to convert a value to a string:
+  newStringValue = String(numericValue);
+
+Numeric conversion happens in mathematical functions and expressions automatically.
+Number(stringValue) function to explicitly convert a value to a number. If the stringValue is not a valid number, the result of such a conversion is NaN.
+
+Boolean(value) function to explicitly convert value to a boolean.
+    alert( Boolean(1) ); // true
+    alert( Boolean(0) ); // false
+    alert( Boolean("hello") ); // true
+    alert( Boolean("") ); // false
+
+## Operators
+
+An operator is unary if it has a single operand. For example, the unary negation - reverses the sign of a number.
+
+An operator is binary if it has two operands. The same minus exists in binary form as well.
+
+Math operators: +, -, *, /, % (reminder), ** (exponential)
+
+If the binary + is applied to strings, it merges (concatenates) them. 
+
+If the unary + is applied to strings, it converts them to a number, just like Number() function
+
+Operator Precedence. If the precedence is the same, the execution order is from left to right:
+    unary plus / unary minus
+    exponentiation
+    multiplication / division
+    addition / substraction
+    assignment
+
+Chaining assignment evaluate from right to left.
+
+  let a, b, c;
+  a = b = c = 2 + 2;
+
+Modify values in place using shortcut operators: +=, -=, /=, *=
+
+Increment / decrement operators only on variables: ++, --, can be placed either before or after the variable, i.e., prefix or postfix. They have highest precedence than any other operator.
+
+## Comparisions
+
+All comparison operators return a boolean value: >, >=, <, <=, ==, !=
+
+Strings are compared letter by letter in dictionary order. Case matters while comparing strings. for ex., a>A becasue of ascii code of a is greater than A.
+
+When comparing values of different types using ==, javascript converts the value to a numbers. 
+For ex.,
+  0 == false // true, false converted to 0
+  '' == false // true, '' converted to 0, false converted to 0
+
+A strict equality operator === checks the equality without type conversion. if a and b are different types then a===b immediately returns false.
+
+There is also a string in-equality operator !== analogus to !=
+
+  null === undefined // false
+  null == undefined // true, null becomes 0, undefined becomes NAN
+
+## Conditional branching
+
+The if statement and the conditional operator ?, that’s also called a “question mark” operator, can be used for conditional branching.
+
+The if (…) statement evaluates the expression in its parentheses and converts the result to a boolean.
+
+format:
+if() {
+    . . .
+}
+else if() {
+    . . . 
+}
+else {
+    . . .
+}
+
+Question mark (ternary) operator can be used to evaluate simpler expressions:
+
+let result = condition ? value1 : value2;
+
+## Logical Operators
+
+There are four logical operators: || (OR), && (AND), ! (NOT), ?? (Nullish Coalescing)
+
+||, && operator evaluate operands from left to right. For each operand, converts it to boolean. 
+
+Precedence: !, &&, ||, ??
+
+Replacing if with && is not a good practice:
+let x = 1;
+(x > 0) && alert( 'Greater than zero!' );
+
+
+The newly introduced Nullish Coalescing operator (??) returns the first argument if it’s not null/undefined. Otherwise, the second one.
+  a ?? b
+
+ex:
+  let user;
+  alert(user ?? "anonymous")
+
+We can also use a sequence of ?? to select the first value from a list that isn’t null/undefined.
+  fname ?? mname ?? lname ?? "anonymous"
+
+The OR || operator can be used in the same way as ??, it has been there from previously.
+  fname || manme || lname || "anonymous"
+
+The difference between || and ?? is: || returns first truthy value where as ?? returns first defined value
+
+JavaScript forbids using ?? together with && and || operators without paranteses. Always use the precedence explicitly when using these operators together.
+
+## Loops
+
+Loops are a way to repeat the same code multiple times - while and for.
+
+while (condition) {
+  // code
+}
+
+While the condition is truthy, the code from the loop body is executed.
+
+If the loop body has a single statement, we can omit the curly braces {…}:
+
+The condition check can be moved below the loop body using the do..while syntax:
+
+do {
+  // loop body, executed atleast once
+} while (condition);
+
+The loop will first execute the body, then check the condition, and, while it’s truthy, execute it again and again.
+
+The for loop is more complex, but it’s also the most commonly used loop.
+
+for (begin; condition; step) {
+  // ... loop body ...
+}
+
+ex: 
+for (let i = 0; i < 3; i++) { // shows 0, then 1, then 2
+  alert(i);
+}
+
+Any part of for can be skipped.
+
+for (;;) {
+  // repeats without limits, infinity loop
+}
+
+The break directive can force the exit at any time during the loop.
+
+The continue directive is a “lighter version” of break. It doesn’t stop the loop. Instead, it stops the current iteration and forces the loop to start a new one (if the condition allows).
+
+The ordinary break would only break the inner loop. Sometimes, that’s not sufficient – labels, come to the rescue!
+
+A label is an identifier with a colon before a loop:
+
+outer: for (let i = 0; i < 3; i++) {
+  for (let j = 0; j < 3; j++) {
+    let input = prompt(`Value at coords (${i},${j})`, '');
+    // if an empty string or canceled, then break out of both loops
+    if (!input) break outer; // (*)
+    // do something with the value...
+  }
+}
+alert('Done!');
+
+break/continue support labels before the loop. A label is the only way for break/continue to escape a nested loop to go to an outer one.
+
+## Switch
+
+A switch statement can replace multiple if checks.
+
+It gives a more descriptive way to compare a value with multiple variants.
+
+The switch has one or more case blocks and an optional default.
+
+switch(x) {
+  case 'value1':  // if (x === 'value1')
+    ...
+    [break]
+
+  case 'value2':  // if (x === 'value2')
+    ...
+    [break]
+
+  default:
+    ...
+    [break]
+}
+
+The value of x is checked for a strict equality to the value from the first case (that is, value1) then to the second (value2) and so on.
+
+If there is no break then the execution continues with the next case without any checks.
+
+Both switch and case allow arbitrary expressions.
+
+switch (+a) {
+  case b + 1:
+    alert("this runs, because +a is 1, exactly equals b+1");
+    break;
+
+Several variants of case which share the same code can be grouped.
+
+  case 3: // (*) grouped two cases
+  case 5:
+    alert('Wrong!');
+    alert("Why don't you take a math class?");
+    break;
+
+## Functions
+
+Functions are the main “building blocks” of the program. They allow the code to be called many times without repetition.
+
+The function keyword goes first, then goes the name of the function, then a list of parameters between the parentheses (comma-separated, empty in the example above) and finally the code of the function, also named “the function body”, between curly braces.
+
+function name(parameters) {
+  ...body...
+}
+
+### Local Variable
+
+A variable declared inside a function is only visible inside that function.
+
+### Global / Outer variables
+
+The function has full access to the outer variable. It can modify it as well.
+
+The outer variable is only used if there’s no local one.
+
+If a same-named variable is declared inside the function then it shadows the outer one. For instance, in the code below the function uses the local userName. The outer one is ignored:
+
+### Parameters
+
+We can pass arbitrary data to functions using parameters (also called function arguments) .
+
+Function parameter values can be changed inside the function just like any local variable. 
+But the change is not seen outside, because a function always gets a copy of the value.
+
+If a parameter is not provided, then its value becomes undefined. 
+
+for ex., 
+
+showNames(fname, lname) {
+    alert(fname + " " + lname);
+}
+
+showNames("Sri", "Y")
+showNames("Sri")
+
+We can specify default values to arguments when a value is not provide using "=" in function declaration.
+
+We can also assign a function to a function parameter.
+
+function showNames(fname, lname = "Yala") {
+  alert(fname + " " + lname);
+}
+
+function showNames(fname, lname = anotherFunction()) {
+  // anotherFunction() only executed if no text given
+  // its result becomes the value of text
+  alert(fname + " " + lname);
+}
+
+### Returning a value
+
+A function can return a value back into the calling code as the result.
+
+If a function does not return a value, it is the same as if it returns undefined:
+
+An empty return is also the same as return undefined:
+
+Never add a newline between return and the value
+
+Functions are actions. So their name is usually a verb. 
+
+### Function expressions
+
+A Function Expression is a function created and assigned to the variable explicitly, like any other value. No matter how the function is defined, it’s just a value stored in the variable.
+
+let sayHi = function() {
+  alert( "Hello" );
+};
+
+let sayHello = sayHi;
+
+sayHi();
+sayHello();
+
+A semicolon at the end of the line while assinging a function to a variable, is used to end the statement just like any assignment to a variable.
+
+### Callback Functions
+
+The idea is that we pass a function and expect it to be “called back” later if necessary. 
+
+For ex.,
+
+function ask(question, yes, no) {
+  if (confirm(question)) 
+    yes()
+  else 
+    no();
+}
+
+function showOk() {
+  alert( "You agreed." );
+}
+
+function showCancel() {
+  alert( "You canceled the execution." );
+}
+
+// usage: functions showOk, showCancel are passed as arguments to ask
+ask("Do you agree?", showOk, showCancel);
+
+or
+
+ask(
+  "Do you agree?",
+  function() { alert("You agreed."); },
+  function() { alert("You canceled the execution."); }
+);
+
+In above example, functions are declared right inside the ask(...) call. They have no name, and so are called anonymous. Such functions are not accessible outside of ask
+
+
+A Function Expression is created when the execution reaches it and is usable only from that moment.
+
+Once the execution flow passes to the right side of the assignment let sum = function… – here we go, the function is created and can be used (assigned, called, etc. ) from now on.
+
+Function Declarations are different. A Function Declaration can be called earlier than it is defined.
+
+For example, a global Function Declaration is visible in the whole script, no matter where it is.
+
+That’s due to internal algorithms. When JavaScript prepares to run the script, it first looks for global Function Declarations in it and creates the functions. We can think of it as an “initialization stage”.
+
+And after all Function Declarations are processed, the code is executed. So it has access to these functions.
+
+In strict mode, when a Function Declaration is within a code block, it’s visible everywhere inside that block. But not outside of it.
+
+### Arrow Functions
+
+Another very simple and concise syntax for creating functions, that’s often better than Function Expressions, called Arrow Functions.
+
+let func = (arg1, arg2, ..., argN) => expression
+
+Ex., let sum = (a, b) => a + b;
+
+If we have only one argument, then parentheses around parameters can be omitted, making that even shorter.
+If there are no arguments, parentheses will be empty (but they should be present):
+
+We can use brackets to write multiple statements inside the function, but we need an explicit return to return something.
+
+## Debugging in Chrome
+
+Debugging is the process of finding and fixing errors within a script. All modern browsers and most other environments support debugging tools – a special UI in developer tools that makes debugging much easier.
+
+Right-click on any page and open Developer Tools
+
+Sources panel has 3 parts - File Navigator, Code Editor and JS Debuggin
+Console panel - we can type the commands and execute by pressing enter
+
+Breakpoints - In the sources code editor panel, click on any line number to add a break point
+
+A breakpoint is a point of code where the debugger will automatically pause the JavaScript execution.
+
+While the code is paused, we can examine current variables, execute commands in the console etc. In other words, we can debug it.
+
+Righ click on the line to create conditional break points. It only triggers when the given condition is true
+
+We can also pause the code by typing "debugger;" statement.
+
+When the execution/control stops at a break point - You can look at different panels - 
+    Watch: shows current value of any expression
+    Call Stack: Shows nested calls chain
+    Scope: current variables
+
+Use console.log() statement to print messages into browser console.
+
+## Code Style - Linters
+
+Linters are tools that can automatically check the style of your code and make improving suggestions.
+
+The great thing about them is that style-checking can also find some bugs, like typos in variable or function names.
+
+Linting tools - JSLint, JSHint, ESLint
+
+## Automated testing
+
+Automated testing means that tests are written separately, in addition to the code. They run our functions in various ways and compare results with the expected.
+
+BDD (Behavior Driven Development) is three things in one: tests, documentation and examples
+
+describe("pow", function() {
+
+  it("raises to n-th power", function() {
+    assert.equal(pow(2, 3), 8);
+  });
+
+});
+
+3 main blocks:
+
+  describe("title", function() { ... })
+  it("use case description", function() { ... })
+  assert.equal(value1, value2)
+
+the following JavaScript libraries are used for tests:
+
+Mocha – the core framework: it provides common testing functions including describe and it and the main function that runs tests.
+Chai – the library with many assertions. It allows to use a lot of different assertions
+Sinon – a library to spy over functions, emulate built-in functions and more
+
+We can setup before/after functions that execute before/after running tests, and also beforeEach/afterEach functions that execute before/after every it.
+
+for ex.,
+
+describe("test", function() {
+
+  before(() => alert("Testing started – before all tests"));
+  after(() => alert("Testing finished – after all tests"));
+
+  beforeEach(() => alert("Before a test – enter a test"));
+  afterEach(() => alert("After a test – exit a test"));
+
+  it('test 1', () => alert(1));
+  it('test 2', () => alert(2));
+
+});
+
+
+## Objects
+
+## Prototypes, Inheritance
+
+## Classes
+
+## Error Handling
+
+## Multi Tasking - Promises, Async/Await
+
+## Modules
+
