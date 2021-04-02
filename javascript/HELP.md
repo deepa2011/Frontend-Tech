@@ -668,6 +668,203 @@ describe("test", function() {
 
 ## Objects
 
+Objects are used to store keyed collections of various data and more complex entities. 
+
+An object can be created with figure brackets {…} with an optional list of properties. A property is a “key: value” pair, where key is a string (also called a “property name”), and value can be anything.
+
+let user = new Object(); // "object constructor" syntax
+let user = {};  // "object literal" syntax
+
+let user = {     // an object
+  name: "John",  // by key "name" store value "John"
+  age: 30        // by key "age" store value 30
+};
+
+Property values are accessible using the dot notation:
+
+// get property values of the object:
+alert( user.name ); // John
+alert( user.age ); // 30
+
+To remove a property, we can use delete operator:
+
+delete user.age;
+
+We can also use multiword property names, but then they must be quoted:
+
+let user = {
+  name: "John",
+  age: 30,
+  "likes birds": true  // multiword property name must be quoted
+};
+
+The last property in the list may end with a comma:
+
+let user = {
+  name: "John",
+  age: 30,
+}
+
+For multiword properties, the dot access doesn’t work:
+
+// set
+user["likes birds"] = true;
+
+// get
+alert(user["likes birds"]); // true
+
+
+We can use square brackets in an object literal, when creating an object. That’s called computed properties.
+
+
+let fruit = prompt("Which fruit to buy?", "apple");
+
+let bag = {
+  [fruit]: 5, // the name of the property is taken from the variable fruit
+};
+
+alert( bag.apple ); // 5 if fruit="apple"
+
+A special operator "in" can be used to check if a property exist in an object
+
+let user = { age: 30 };
+
+let key = "age";
+alert( key in user ); // true, property "age" exists
+
+### For IN Loop
+
+let user = {
+  name: "John",
+  age: 30,
+  isAdmin: true
+};
+
+for (let key in user) {
+  // keys
+  alert( key );  // name, age, isAdmin
+  // values for the keys
+  alert( user[key] ); // John, 30, true
+}
+
+### Object References
+
+One of the fundamental differences of objects versus primitives is that objects are stored and copied “by reference”, whereas primitive values: strings, numbers, booleans, etc – are always copied “as a whole value”.
+
+
+A variable assigned to an object stores not the object itself, but its “address in memory” – in other words “a reference” to it.
+
+When an object variable is copied, the reference is copied, but the object itself is not duplicated.
+
+When an object variable is copied, the reference is copied, but the object itself is not duplicated.
+
+### Comparision by reference
+
+Two objects are equal only if they are the same object.
+
+let a = {};
+let b = a; // copy the reference
+
+alert( a == b ); // true, both variables reference the same object
+alert( a === b ); // true
+
+let a = {};
+let b = {}; // two independent objects
+
+alert( a == b ); // false
+
+We can clone and create a new object from existing objects using the syntax:
+
+Object.assign(dest, [src1, src2, src3...])
+
+let user = { name: "John" };
+
+let permissions1 = { canView: true };
+let permissions2 = { canEdit: true };
+
+// copies all properties from permissions1 and permissions2 into user
+Object.assign(user, permissions1, permissions2);
+
+// now user = { name: "John", canView: true, canEdit: true }
+
+
+There are also other methods of cloning an object, i.e., using the spread syntax 
+clone = {...user}.
+
+### Memory management
+
+There’s a background process in the JavaScript engine that is called garbage collector. It monitors all objects and removes those that have become unreachable.
+
+Garbage collection is performed automatically. We cannot force or prevent it.
+
+Being referenced is not the same as being reachable (from a root): a pack of interlinked objects can become unreachable as a whole.
+
+### Object methods
+
+Ex.
+let user = {
+  name: "John",
+  age: 30
+};
+
+user.sayHi = function() {
+  alert("Hello!");
+};
+
+user.sayHi(); // Hello!
+
+A function that is a property of an object is called its method.
+
+let user = {
+  // ...
+};
+
+// first, declare
+function sayHi() {
+  alert("Hello!");
+};
+
+// then add as a method
+user.sayHi = sayHi;
+
+user.sayHi(); // Hello!
+
+Method shorthands:
+
+// these objects do the same
+
+user = {
+  sayHi: function() {
+    alert("Hello");
+  }
+};
+
+// method shorthand looks better, right?
+user = {
+  sayHi() { // same as "sayHi: function()"
+    alert("Hello");
+  }
+};
+
+### this keyword
+
+To access the object, a method can use the this keyword.
+
+let user = {
+  name: "John",
+  age: 30,
+
+  sayHi() {
+    // "this" is the "current object"
+    alert(this.name); // it can also be user.name
+  }
+
+};
+
+user.sayHi(); // John
+
+
+
 ## Prototypes, Inheritance
 
 ## Classes
