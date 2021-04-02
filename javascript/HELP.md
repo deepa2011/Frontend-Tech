@@ -197,6 +197,8 @@ alert(age) // displays "undefined"
 
 - Objects
 
+let employee = Employee('', '', 24, 10)
+
 The object type is special.
 
 All other types are called “primitive” because their values can contain only a single thing (be it a string or a number or whatever). In contrast, objects are used to store collections of data and more complex entities.
@@ -219,6 +221,14 @@ typeof "foo" // "string"
 typeof Math // "object", built-in object
 typeof alert // "function" 
 
+let responseObj = http.get('api url');
+if(typeof(responeObj)=="Employee") {
+  // do some work
+} 
+else {
+  // not employee, do some other work
+}
+
 ## Interaction: alert, prompt, confirm
 
 alert shows a message and waits for the user to press “OK”.
@@ -229,7 +239,7 @@ prompt accepts two arguments: title and default value for input field
   result = prompt("How old are you?", 100);
 
 confirm shows a modal window with a question and two buttons: OK and Cancel.
-  result = confirm(question);
+  result = confirm("Do you want to exit?");
 The result is true if OK is pressed and false otherwise.
 
 
@@ -237,6 +247,9 @@ The result is true if OK is pressed and false otherwise.
 
 
 ## Type Conversions
+let random = 99;
+let numStr = String(num);
+let numberAgain = Number(numStr);
 
 String(value) function to convert a value to a string:
   newStringValue = String(numericValue);
@@ -274,6 +287,12 @@ Chaining assignment evaluate from right to left.
   let a, b, c;
   a = b = c = 2 + 2;
 
+  let a = 5;
+  a = a + 2;
+  a += 2;
+
+  a = 2 ** 3; // 2 to the power of 3 = 2 * 2 * 2
+
 Modify values in place using shortcut operators: +=, -=, /=, *=
 
 Increment / decrement operators only on variables: ++, --, can be placed either before or after the variable, i.e., prefix or postfix. They have highest precedence than any other operator.
@@ -288,6 +307,8 @@ When comparing values of different types using ==, javascript converts the value
 For ex.,
   0 == false // true, false converted to 0
   '' == false // true, '' converted to 0, false converted to 0
+
+  0 === false // false
 
 A strict equality operator === checks the equality without type conversion. if a and b are different types then a===b immediately returns false.
 
@@ -313,7 +334,19 @@ else {
     . . .
 }
 
-Question mark (ternary) operator can be used to evaluate simpler expressions:
+if (age<25) {
+  // some code
+}
+ else {
+
+ }
+
+Question mark (ternary - ?;) operator can be used to evaluate simpler expressions:
+
+-3 // unary operator -
+2 + 3 // binary operators 
+(condition) ? <stmt1 for true> : <stmt2 for false>
+(age>25) ? alert('25') : alert('10');
 
 let result = condition ? value1 : value2;
 
@@ -324,6 +357,27 @@ There are four logical operators: || (OR), && (AND), ! (NOT), ?? (Nullish Coales
 ||, && operator evaluate operands from left to right. For each operand, converts it to boolean. 
 
 Precedence: !, &&, ||, ??
+
+true AND true = true
+false AND true = false
+false and false = false
+true AND false = false
+
+true OR true = true
+false OR true = true
+false OR false = false
+true OR false = true
+
+! true = false
+! false = true
+
+let age = 35;
+if (!(age>25)) {
+  alert('hello');
+}
+else {
+  alert('world');
+}
 
 Replacing if with && is not a good practice:
 let x = 1;
@@ -667,203 +721,6 @@ describe("test", function() {
 
 
 ## Objects
-
-Objects are used to store keyed collections of various data and more complex entities. 
-
-An object can be created with figure brackets {…} with an optional list of properties. A property is a “key: value” pair, where key is a string (also called a “property name”), and value can be anything.
-
-let user = new Object(); // "object constructor" syntax
-let user = {};  // "object literal" syntax
-
-let user = {     // an object
-  name: "John",  // by key "name" store value "John"
-  age: 30        // by key "age" store value 30
-};
-
-Property values are accessible using the dot notation:
-
-// get property values of the object:
-alert( user.name ); // John
-alert( user.age ); // 30
-
-To remove a property, we can use delete operator:
-
-delete user.age;
-
-We can also use multiword property names, but then they must be quoted:
-
-let user = {
-  name: "John",
-  age: 30,
-  "likes birds": true  // multiword property name must be quoted
-};
-
-The last property in the list may end with a comma:
-
-let user = {
-  name: "John",
-  age: 30,
-}
-
-For multiword properties, the dot access doesn’t work:
-
-// set
-user["likes birds"] = true;
-
-// get
-alert(user["likes birds"]); // true
-
-
-We can use square brackets in an object literal, when creating an object. That’s called computed properties.
-
-
-let fruit = prompt("Which fruit to buy?", "apple");
-
-let bag = {
-  [fruit]: 5, // the name of the property is taken from the variable fruit
-};
-
-alert( bag.apple ); // 5 if fruit="apple"
-
-A special operator "in" can be used to check if a property exist in an object
-
-let user = { age: 30 };
-
-let key = "age";
-alert( key in user ); // true, property "age" exists
-
-### For IN Loop
-
-let user = {
-  name: "John",
-  age: 30,
-  isAdmin: true
-};
-
-for (let key in user) {
-  // keys
-  alert( key );  // name, age, isAdmin
-  // values for the keys
-  alert( user[key] ); // John, 30, true
-}
-
-### Object References
-
-One of the fundamental differences of objects versus primitives is that objects are stored and copied “by reference”, whereas primitive values: strings, numbers, booleans, etc – are always copied “as a whole value”.
-
-
-A variable assigned to an object stores not the object itself, but its “address in memory” – in other words “a reference” to it.
-
-When an object variable is copied, the reference is copied, but the object itself is not duplicated.
-
-When an object variable is copied, the reference is copied, but the object itself is not duplicated.
-
-### Comparision by reference
-
-Two objects are equal only if they are the same object.
-
-let a = {};
-let b = a; // copy the reference
-
-alert( a == b ); // true, both variables reference the same object
-alert( a === b ); // true
-
-let a = {};
-let b = {}; // two independent objects
-
-alert( a == b ); // false
-
-We can clone and create a new object from existing objects using the syntax:
-
-Object.assign(dest, [src1, src2, src3...])
-
-let user = { name: "John" };
-
-let permissions1 = { canView: true };
-let permissions2 = { canEdit: true };
-
-// copies all properties from permissions1 and permissions2 into user
-Object.assign(user, permissions1, permissions2);
-
-// now user = { name: "John", canView: true, canEdit: true }
-
-
-There are also other methods of cloning an object, i.e., using the spread syntax 
-clone = {...user}.
-
-### Memory management
-
-There’s a background process in the JavaScript engine that is called garbage collector. It monitors all objects and removes those that have become unreachable.
-
-Garbage collection is performed automatically. We cannot force or prevent it.
-
-Being referenced is not the same as being reachable (from a root): a pack of interlinked objects can become unreachable as a whole.
-
-### Object methods
-
-Ex.
-let user = {
-  name: "John",
-  age: 30
-};
-
-user.sayHi = function() {
-  alert("Hello!");
-};
-
-user.sayHi(); // Hello!
-
-A function that is a property of an object is called its method.
-
-let user = {
-  // ...
-};
-
-// first, declare
-function sayHi() {
-  alert("Hello!");
-};
-
-// then add as a method
-user.sayHi = sayHi;
-
-user.sayHi(); // Hello!
-
-Method shorthands:
-
-// these objects do the same
-
-user = {
-  sayHi: function() {
-    alert("Hello");
-  }
-};
-
-// method shorthand looks better, right?
-user = {
-  sayHi() { // same as "sayHi: function()"
-    alert("Hello");
-  }
-};
-
-### this keyword
-
-To access the object, a method can use the this keyword.
-
-let user = {
-  name: "John",
-  age: 30,
-
-  sayHi() {
-    // "this" is the "current object"
-    alert(this.name); // it can also be user.name
-  }
-
-};
-
-user.sayHi(); // John
-
-
 
 ## Prototypes, Inheritance
 
