@@ -863,6 +863,336 @@ let user = {
 
 user.sayHi(); // John
 
+In JavaScript, keyword this can be used in any function, even if it’s not a method of an object.
+
+The value of this is evaluated during the run-time, depending on the context.
+
+function sayHi() {
+  alert(this);
+}
+
+sayHi(); // undefined
+
+Arrow functions are special: they don’t have their “own” this. If we reference this from such a function, it’s taken from the outer “normal” function.
+
+let user = {
+  firstName: "Ilya",
+  sayHi() {
+    let arrow = () => alert(this.firstName);
+    arrow();
+  }
+};
+
+user.sayHi(); // Ilya
+
+
+### Constructor, "new"
+
+The regular {...} syntax allows to create one object. But often we need to create many similar objects, like multiple users or menu items and so on.
+
+Constructor functions technically are regular functions. There are two conventions though:
+
+  - They are named with capital letter first.
+  - They should be executed only with "new" operator.
+
+function User(name) {
+  this.name = name;
+  this.isAdmin = false;
+}
+
+let user = new User("Jack");
+
+alert(user.name); // Jack
+alert(user.isAdmin); // false
+
+When a function is executed with new, it does the following steps:
+
+  - A new empty object is created and assigned to this.
+  - The function body executes. Usually it modifies this, adds new properties to it.
+  - The value of this is returned.
+
+new User(...) does something like:
+
+function User(name) {
+  // this = {};  (implicitly)
+
+  // add properties to this
+  this.name = name;
+  this.isAdmin = false;
+
+  // return this;  (implicitly)
+}
+
+So let user = new User("Jack") gives the same result as:
+
+let user = {
+  name: "Jack",
+  isAdmin: false
+};
+
+
+#### new function() { … }
+If we have many lines of code all about creation of a single complex object, we can wrap them in constructor function, like this:
+
+let user = new function() {
+  this.name = "John";
+  this.isAdmin = false;
+
+  // ...other code for user creation
+  // maybe complex logic and statements
+  // local variables etc
+};
+
+The constructor can’t be called again, because it is not saved anywhere, just created and called. So this trick aims to encapsulate the code that constructs the single object, without future reuse.
+
+Inside a function, we can check whether it was called with new or without it, using a special new.target property.
+
+function User() {
+  alert(new.target);
+}
+
+// without "new":
+User(); // undefined
+
+// with "new":
+new User(); // function User { ... }
+
+#### Return from constructors
+Usually, constructors do not have a return statement. Their task is to write all necessary stuff into this, and it automatically becomes the result.
+
+But if there is a return statement, then the rule is simple:
+  - If return is called with an object, then the object is returned instead of this.
+  - If return is called with a primitive, it’s ignored.
+  - In other words, return with an object returns that object, in all other cases this is returned.
+
+For instance, here return overrides this by returning an object
+
+function BigUser() {
+
+  this.name = "John";
+
+  return { name: "Godzilla" };  // <-- returns this object
+}
+
+alert( new BigUser().name );  // Godzilla, got that object
+
+We can omit parentheses after new, if it has no arguments.
+
+let user = new User; // <-- no parentheses
+
+We can also add to this not only properties, but methods as well.
+
+function User(name) {
+  this.name = name;
+
+  this.sayHi = function() {
+    alert( "My name is: " + this.name );
+  };
+}
+
+let john = new User("John");
+
+john.sayHi(); // My name is: John
+
+### Optional chaining
+
+The optional chaining ?. stops the evaluation if the value before ?. is undefined or null and returns undefined.
+
+value?.prop means:
+
+  - works as value.prop, if value exists,
+  - otherwise (when value is undefined/null) it returns undefined.
+
+let user = {}; // user has no address
+
+alert( user?.address?.street ); // undefined (no error)
+
+?.() is used to call a function that may not exist.
+
+let userAdmin = {
+  admin() {
+    alert("I am admin");
+  }
+};
+
+let userGuest = {};
+userAdmin.admin?.(); // I am admin
+userGuest.admin?.(); // nothing (no such method)
+
+The ?.[] syntax also works, if we’d like to use brackets [] to access properties instead of dot .
+
+let key = "firstName";
+
+let user1 = {
+  firstName: "John"
+};
+
+let user2 = null;
+alert( user1?.[key] ); // John
+alert( user2?.[key] ); // undefined
+
+Also we can use ?. with delete:
+
+delete user?.name; // delete user.name if user exists
+
+We can use ?. for safe reading and deleting, but not writing
+
+## Symbols
+
+A “symbol” represents a unique identifier.
+
+A value of this type can be created using Symbol():
+
+// id is a new symbol
+let id = Symbol();
+
+// id is a symbol with the description "id"
+let id = Symbol("id");
+
+Most values in JavaScript support implicit conversion to a string. Symbols are special. They don’t auto-convert.
+
+alert(id); // TypeError: Cannot convert a Symbol value to a string
+alert(id.toString()); // Symbol(id), now it works
+alert(id.description); // id
+
+Symbols allow us to create “hidden” properties of an object, that no other part of code can accidentally access or overwrite.
+
+For instance, if we’re working with user objects, that belong to a third-party code. We’d like to add identifiers to them.
+
+let user = { // belongs to another code
+  name: "John"
+};
+
+let id = Symbol("id");
+
+user[id] = 1;
+alert( user[id] ); // we can access the data using the symbol as the key
+
+### Object to Primitive conversion
+
+We can fine-tune string and numeric conversion, using special object methods.
+
+For an object-to-string conversion, when we’re doing an operation on an object that expects a string, like alert:
+
+// output
+alert(obj);
+
+// using object as a property key
+anotherObj[obj] = 123;
+
+For an object-to-number conversion, like when we’re doing maths:
+
+// explicit conversion
+let num = Number(obj);
+
+// maths (except binary plus)
+let n = +obj; // unary plus
+let delta = date1 - date2;
+
+// less/greater comparison
+let greater = user1 > user2;
+
+To do the conversion, JavaScript tries to find and call three object methods:
+
+  - Call obj[Symbol.toPrimitive](hint) – the method with the symbolic key Symbol.toPrimitive (system symbol), if such method exists,
+  - Otherwise if hint is "string"
+    try obj.toString() and obj.valueOf(), whatever exists.
+  - Otherwise if hint is "number" or "default"
+    try obj.valueOf() and obj.toString(), whatever exists.
+
+Ex:
+let user = {
+  name: "John",
+  money: 1000,
+
+  [Symbol.toPrimitive](hint) {
+    alert(`hint: ${hint}`);
+    return hint == "string" ? `{name: "${this.name}"}` : this.money;
+  }
+};
+
+// conversions demo:
+alert(user); // hint: string -> {name: "John"}
+alert(+user); // hint: number -> 1000
+alert(user + 500); // hint: default -> 1500
+
+By default, a plain object has following toString and valueOf methods:
+
+The toString method returns a string "[object Object]".
+The valueOf method returns the object itself.
+
+let user = {name: "John"};
+
+alert(user); // [object Object]
+alert(user.valueOf() === user); // true
+
+Ex:
+let user = {
+  name: "John",
+  money: 1000,
+
+  // for hint="string"
+  toString() {
+    return `{name: "${this.name}"}`;
+  },
+
+  // for hint="number" or "default"
+  valueOf() {
+    return this.money;
+  }
+
+};
+
+alert(user); // toString -> {name: "John"}
+alert(+user); // valueOf -> 1000
+alert(user + 500); // valueOf -> 1500
+
+## Arrays
+
+Objects allow you to store keyed collections of values. That’s fine.
+
+But quite often we find that we need an ordered collection, where we have a 1st, a 2nd, a 3rd element and so on. 
+
+There are two syntaxes for creating an empty array:
+
+let arr = new Array();
+let arr = [];
+
+let fruits = ["Apple", "Orange", "Plum"];
+alert( fruits[0] ); // Apple
+alert( fruits[1] ); // Orange
+alert( fruits[2] ); // Plum
+
+fruits[2] = 'Pear'; // now ["Apple", "Orange", "Pear"]
+alert( fruits.length ); // 3
+
+// mix of values
+let arr = [ 'Apple', { name: 'John' }, true, function() { alert('hello'); } ];
+
+// get the object at index 1 and then show its name
+alert( arr[1].name ); // John
+
+// get the function at index 3 and run it
+arr[3](); // hello
+
+An array, just like an object, may end with a comma:
+
+The “trailing comma” style makes it easier to insert/remove items, because all lines become alike.
+
+A queue is one of the most common uses of an array. In computer science, this means an ordered collection of elements which supports two operations: 
+  push appends an element to the end.
+  shift get an element from the beginning, advancing the queue, so that the 2nd element becomes the 1st.
+
+Arrays support both operations.
+
+In practice we need it very often. For example, a queue of messages that need to be shown on-screen.
+
+There’s another use case for arrays – the data structure named stack.
+
+It supports two operations:
+
+push adds an element to the end.
+pop takes an element from the end.
 
 
 ## Prototypes, Inheritance
