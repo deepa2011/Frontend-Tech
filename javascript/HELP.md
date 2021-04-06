@@ -459,6 +459,29 @@ function name(parameters) {
 
 A variable declared inside a function is only visible inside that function.
 
+<script lang="javascript">
+let a = 2;
+let b = 3;
+
+function sum() {
+  let a2 = 5;
+  let b2 = 6;
+
+  a = 4;
+
+  let result=a+b;
+
+  return result;
+}
+
+alert(a); // 2
+alert(sum()); //7
+alert(a); // 4
+
+</script>
+
+
+
 ### Global / Outer variables
 
 The function has full access to the outer variable. It can modify it as well.
@@ -493,11 +516,23 @@ function showNames(fname, lname = "Yala") {
   alert(fname + " " + lname);
 }
 
+showNames("Sri", "Y"); // Sri Y
+showNames("Sri"); // Sri Yala
+
 function showNames(fname, lname = anotherFunction()) {
   // anotherFunction() only executed if no text given
   // its result becomes the value of text
   alert(fname + " " + lname);
 }
+
+function hello(name) {
+  alert("Hello " + name);
+}
+
+let sayHello = hello; // assign function to a variable
+
+hello("Sri"); // Hello Sri
+sayHello("abc"); // Hello abc 
 
 ### Returning a value
 
@@ -511,9 +546,35 @@ Never add a newline between return and the value
 
 Functions are actions. So their name is usually a verb. 
 
+function add(num1, num2) {
+  return num1+num2;
+}
+
+function substract(num1, num2) {
+  return num1-num2;
+}
+
+function multiply(num1, num2) {
+  if(num1==0 || num2==0) { // false OR true = true
+    return 0;
+  }
+  return num1*num2; // 2*3
+}
+
+let total = add(2, 3); // total=5
+let diff = substract(4, 1); // diff=3
+
+let mul1 = multiply(2, 3); // mul1=6
+let mul2 = multiply(3, 0); // mul2=0
+
 ### Function expressions
 
 A Function Expression is a function created and assigned to the variable explicitly, like any other value. No matter how the function is defined, it’s just a value stored in the variable.
+
+
+function sayHi() {
+  alert("Hello);
+}
 
 let sayHi = function() {
   alert( "Hello" );
@@ -539,16 +600,16 @@ function ask(question, yes, no) {
     no();
 }
 
-function showOk() {
+function showOk() {   // 0 parameter, showOk, alert
   alert( "You agreed." );
 }
 
-function showCancel() {
+function showCancel() { // showCancel, 0 paramerters, alert
   alert( "You canceled the execution." );
 }
 
 // usage: functions showOk, showCancel are passed as arguments to ask
-ask("Do you agree?", showOk, showCancel);
+ask("Do you agree?", showOk, showCancel); // 3 parameters, queston="Do you agree?", yes=showOk (function), no=showCancel (function)
 
 or
 
