@@ -644,6 +644,32 @@ let func = (arg1, arg2, ..., argN) => expression
 
 Ex., let sum = (a, b) => a + b;
 
+is same as 
+
+function sum(a, b) {
+  return a+b;
+}
+
+function isGreater(a,b) {
+  if (a>b)
+    return a;
+  else
+    return b;
+}
+
+let isGreater = (a, b) => {
+  if (a>b)
+    return a;
+  else
+    return b;
+}
+
+function sayHello() {
+  alert("Hello World");
+}
+
+let sayHello = () => alert("Hello World");
+
 If we have only one argument, then parentheses around parameters can be omitted, making that even shorter.
 If there are no arguments, parentheses will be empty (but they should be present):
 
@@ -1255,14 +1281,201 @@ It supports two operations:
 push adds an element to the end.
 pop takes an element from the end.
 
+For stacks, the latest pushed item is received first, that’s also called LIFO (Last-In-First-Out) principle. For queues, we have FIFO (First-In-First-Out).
 
-## Prototypes, Inheritance
+LIFO Ex:
 
-## Classes
+let fruits = ["Apple", "Orange", "Pear"];
+alert( fruits.pop() ); // remove "Pear" and alert it
+alert( fruits ); // Apple, Orange
+fruits.push("Pear");
+alert( fruits ); // Apple, Orange, Pear
+
+fruits.push(...) is equal to fruits[fruits.length] = ...
+
+FIFO Ex:
+
+let fruits = ["Apple", "Orange", "Pear"];
+alert( fruits.shift() ); // remove Apple and alert it
+alert( fruits ); // Orange, Pear
+
+
+let fruits = ["Orange", "Pear"];
+fruits.unshift('Apple');
+alert( fruits ); // Apple, Orange, Pear
+
+Methods push and unshift can add multiple elements at once.
+
+Methods push/pop run fast, while shift/unshift are slow.
+
+Looping through the elements in array:
+
+Older for loop:
+let arr = ["Apple", "Orange", "Pear"];
+for (let i = 0; i < arr.length; i++) {
+  alert( arr[i] );
+}
+
+New for..of loop:
+
+let fruits = ["Apple", "Orange", "Plum"];
+// iterates over array elements
+for (let fruit of fruits) {
+  alert( fruit );
+}
+
+OR for..in loop:
+
+let arr = ["Apple", "Orange", "Pear"];
+for (let key in arr) {
+  alert( arr[key] ); // Apple, Orange, Pear
+}
+
+
+The arr.splice array method can do everything: insert, remove and replace elements.
+
+let arr = ["I", "study", "JavaScript"];
+let removed = arr.splice(1, 1); // from index 1 remove 1 element
+alert( arr ); // ["I", "JavaScript"]
+alert( removed); // ["study"]
+
+let arr = ["I", "study", "JavaScript", "right", "now"];
+// remove 3 first elements and replace them with another
+arr.splice(0, 3, "Let's", "dance");
+alert( arr ) // now ["Let's", "dance", "right", "now"]
+
+the arr.slice returns a new array copying to it all items from index start to end (not including end). Both start and end can be negative, in that case position from array end is assumed.
+
+let arr = ["t", "e", "s", "t"];
+alert( arr.slice(1, 3) ); // e,s (copy from 1 to 3)
+alert( arr.slice(-2) ); // s,t (copy from -2 till the end)
 
 ## Error Handling
 
+There’s a syntax construct try...catch that allows us to “catch” errors so the script can, instead of dying, do something more reasonable.
+
+try {
+  // code...
+} catch (err) {
+  // error handling
+}
+
+try {
+  alert('Start of try runs');  // (1) <--
+  lalala; // error, variable is not defined!
+  alert('End of try (never reached)');  // (2)
+} catch (err) {
+  alert(`Error has occurred!`); // (3) <--
+}
+
+When an error occurs, JavaScript generates an object containing the details about it. The object is then passed as an argument to catch:
+
+The error object has two main properties: name and message
+
+There are other non-standard properties available in most environments. One of most widely used and supported is: stack
+
+We can also throw error in the code using "throw" statement.
+
+Ex:
+
+let json = '{ "age": 30 }'; // incomplete data
+
+try {
+  let user = JSON.parse(json); // <-- no errors
+  if (!user.name) {
+    throw new SyntaxError("Incomplete data: no name"); // (*)
+  }
+  alert( user.name );
+} catch (err) {
+  alert( "JSON Error: " + err.message ); // JSON Error: Incomplete data: no name
+}
+
+The finally clause is often used when we start doing something and want to finalize it in any case of outcome.
+
+try {
+   ... try to execute the code ...
+} catch (err) {
+   ... handle errors ...
+} finally {
+   ... execute always ...
+}
+
+In the browser we can assign a function to the special window.onerror property, that will run in case of an uncaught error.
+
+window.onerror = function(message, url, line, col, error) {
+  // ...
+};
+
 ## Multi Tasking - Promises, Async/Await
+
+A promise is a special JavaScript object that links the “producing code” and the “consuming code” together. In terms of our analogy: this is the “subscription list”. The “producing code” takes whatever time it needs to produce the promised result, and the “promise” makes that result available to all of the subscribed code when it’s ready.
+
+let promise = new Promise(function(resolve, reject) {
+  // executor (the producing code, "singer")
+});
+
+Arguments resolve and reject are callbacks provided by JavaScript.
+
+When the executor obtains the result, be it soon or late, doesn’t matter, it should call one of these callbacks:
+
+resolve(value) — if the job finished successfully, with result value.
+reject(error) — if an error occurred, error is the error object.
+
+The promise object returned by the new Promise constructor has these internal properties:
+
+state — initially "pending", then changes to either "fulfilled" when resolve is called or "rejected" when reject is called.
+result — initially undefined, then changes to value when resolve(value) called or error when reject(error) is called.
+
+Producer:
+
+let promise = new Promise(function(resolve, reject) {
+  // the function is executed automatically when the promise is constructed
+
+  // after 1 second signal that the job is done with the result "done"
+  setTimeout(() => resolve("done"), 1000);
+
+  OR 
+
+  // after 1 second signal that the job is finished with an error
+  setTimeout(() => reject(new Error("Whoops!")), 1000);
+});
+
+Consumer:
+
+// resolve runs the first function in .then
+promise.then(
+  result => alert(result), // shows "done!" after 1 second
+  error => alert(error) // doesn't run
+);
+
+// .catch(f) is the same as promise.then(null, f)
+promise.catch(alert); // shows "Error: Whoops!" after 1 second
+
+
+The word “async” before a function means one simple thing: a function always returns a promise. Other values are wrapped in a resolved promise automatically.
+
+async function f() {
+  return 1;
+}
+
+f().then(alert); // 1
+
+The keyword await makes JavaScript wait until that promise settles and returns its result.
+
+async function f() {
+
+  let promise = new Promise((resolve, reject) => {
+    setTimeout(() => resolve("done!"), 1000)
+  });
+
+  let result = await promise; // wait until the promise resolves (*)
+
+  alert(result); // "done!"
+}
+
+f();
+
+await won’t work in the top-level code
 
 ## Modules
 
