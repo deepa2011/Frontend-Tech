@@ -272,6 +272,36 @@ $ npm run watch
 $ npm run dev
 $ npm run prod
 
+npm install of a package can be done at two levels:
+
+> a local install (default, in local node_modules folder)
+> a global install  (global location, find location using npm root -g command)
+
+A global installation is performed using the -g flag:
+
+> npm install -g lodash
+
+## Package.json
+
+The package.json file is kind of a manifest for your project.
+
+There are no fixed format or requirements of what should be in a package.json file, for an application. It can be empty as well - {}
+
+The only requirement is that it respects the JSON format
+
+Properties:
+
+> version: indicates the current version
+> name: sets the application/package name
+> description: is a brief description of the app/package
+> main: set the entry point for the application
+> private: if set to true prevents the app/package to be accidentally published on npm
+> scripts: defines a set of node scripts you can run
+> dependencies: sets a list of npm packages installed as dependencies
+> devDependencies: sets a list of npm packages installed as development dependencies
+> engines: sets which versions of Node.js this package/app works on
+> browserslist: is used to tell which browsers (and their versions) you want to support
+
 
 
 
