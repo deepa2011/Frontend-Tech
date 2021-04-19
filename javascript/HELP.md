@@ -769,10 +769,19 @@ Automated testing means that tests are written separately, in addition to the co
 
 BDD (Behavior Driven Development) is three things in one: tests, documentation and examples
 
-describe("pow", function() {
+function pow(a, b) {
+  return a**b;
+}
+
+Unit test:
+describe("unit testing pow()", function() {
 
   it("raises to n-th power", function() {
-    assert.equal(pow(2, 3), 8);
+    assert.equal(pow(2, 3), 8); // Unit test pass
+  });
+
+  it("raises to n-th power", function() {
+    assert.equal(pow(4, 2), 16); // Unit test pass
   });
 
 });
@@ -809,9 +818,6 @@ describe("test", function() {
 
 ## Objects
 
-<<<<<<< HEAD
-## Prototypes, Inheritance
-=======
 Objects are used to store keyed collections of various data and more complex entities. 
 
 An object can be created with figure brackets {…} with an optional list of properties. A property is a “key: value” pair, where key is a string (also called a “property name”), and value can be anything.
@@ -832,7 +838,7 @@ alert( user.age ); // 30
 
 To remove a property, we can use delete operator:
 
-delete user.age;
+delete user.age; // user = {name: "John"}
 
 We can also use multiword property names, but then they must be quoted:
 
@@ -853,13 +859,13 @@ For multiword properties, the dot access doesn’t work:
 
 // set
 user["likes birds"] = true;
+user.name
+user[name]
 
 // get
 alert(user["likes birds"]); // true
 
-
 We can use square brackets in an object literal, when creating an object. That’s called computed properties.
-
 
 let fruit = prompt("Which fruit to buy?", "apple");
 
@@ -867,6 +873,9 @@ let bag = {
   [fruit]: 5, // the name of the property is taken from the variable fruit
 };
 
+let bag = {
+  orange: 5
+}
 alert( bag.apple ); // 5 if fruit="apple"
 
 A special operator "in" can be used to check if a property exist in an object
@@ -875,6 +884,16 @@ let user = { age: 30 };
 
 let key = "age";
 alert( key in user ); // true, property "age" exists
+
+let user = {
+  name: "abc",
+  age: 30,
+  sal: 5000
+}
+
+alert("lname" in user); // false
+alert("sal" in user); // true
+
 
 ### For IN Loop
 
@@ -895,12 +914,22 @@ for (let key in user) {
 
 One of the fundamental differences of objects versus primitives is that objects are stored and copied “by reference”, whereas primitive values: strings, numbers, booleans, etc – are always copied “as a whole value”.
 
-
 A variable assigned to an object stores not the object itself, but its “address in memory” – in other words “a reference” to it.
 
 When an object variable is copied, the reference is copied, but the object itself is not duplicated.
 
 When an object variable is copied, the reference is copied, but the object itself is not duplicated.
+
+let user = {
+  name: "John",
+  age: 30,
+  isAdmin: true
+};
+
+let user2 = user; //  copy by reference, same object
+
+let num = 12;
+let num2 = num; // copy by value
 
 ### Comparision by reference
 
@@ -1149,6 +1178,7 @@ value?.prop means:
 
 let user = {}; // user has no address
 
+alert(user.address.street); // error
 alert( user?.address?.street ); // undefined (no error)
 
 ?.() is used to call a function that may not exist.
@@ -1213,7 +1243,6 @@ user[id] = 1;
 alert( user[id] ); // we can access the data using the symbol as the key
 
 ### Object to Primitive conversion
->>>>>>> e4233ebd06e614d57a0ea9ea6b5098bf5da9385b
 
 We can fine-tune string and numeric conversion, using special object methods.
 
@@ -1228,7 +1257,8 @@ anotherObj[obj] = 123;
 For an object-to-number conversion, like when we’re doing maths:
 
 // explicit conversion
-let num = Number(obj);
+let str = "22";
+let num = Number(str);
 
 // maths (except binary plus)
 let n = +obj; // unary plus
