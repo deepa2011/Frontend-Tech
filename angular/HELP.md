@@ -9,6 +9,7 @@ NPM
 
 Install Angular client (ng)
     npm install -g @angular/cli
+    ng --version
 
 Create new app
     ng new my-app
@@ -81,3 +82,74 @@ If the router determines that the current application state requires particular 
 Together, a component and template define an Angular view.
 
 The dependency injector provides services to a component, such as the router service that lets you define navigation among views.
+
+## Commands
+
+Create new project 
+
+> ng new angular-proj1
+
+> cd angular-proj1
+> ng serve --open
+
+Create new component
+
+> ng generate component users
+
+Create new service
+
+> ng generate service user
+
+
+
+
+## Directives
+
+1. The double curly ("{{" and "}}") braces are Angular's interpolation binding syntax. This interpolation binding presents the variable value inside the HTML header tag.
+
+2. The ngOnInit() is a lifecycle hook. Angular calls ngOnInit() shortly after creating a component. It's a good place to put initialization logic.
+
+3. @Component is a decorator function that specifies the Angular metadata for the component.
+
+4. <app-some_custom_component> is the element selector for some component
+
+5. The pipe operator ( | ), activates built-in UppercasePipe. Pipes are a good way to format strings, currency amounts, dates and other display data. Angular ships with several built-in pipes and we can create our own.
+
+    ex: <h2>{{user.name | uppercase}}</h2>
+
+6. [(ngModel)] is Angular's two-way data binding syntax. It belongs to the optional FormsModule and you must import to using it.
+
+    ex: <input id="name" [(ngModel)]="user.name" placeholder="name">
+
+7. Angular needs to know how the pieces of your application fit together and what other files and libraries the app requires. This information is called metadata.
+
+    Some of the metadata is in the @Component decorators that you added to your component classes. Other critical metadata is in @NgModule decorators.
+
+    The most important @NgModule decorator annotates the top-level AppModule class.
+
+8. Every component must be declared in exactly one NgModule.
+
+9. *ngFor is Angular's repeater directive. It repeats the host element for each element in a list.
+
+    <li *ngFor="let user of users">
+
+10. Click event binding can be performed using "(click)". The parentheses around click tell Angular to listen for the <li> element's click event
+    <li *ngFor="let user of users" (click)="onSelect(user)">
+
+11. Angular's class binding can add and remove a CSS class conditionally. Just add [class.some-css-class]="some-condition" to the element you want to style.
+    [class.selected]="user === selectedUser"
+
+12. *ngIf is Angular's conditional directive to conditionally include or exclude a block of HTML.
+
+13. @Input decorator to make the a property available for binding by an external component, i.e., Master-Detail components, where master components passes an object to child component.
+
+    We can use property binding "[property_name]" to pass the value to property
+
+    Ex: in user master component:
+        <app-user-detail [user]="selectedUser"></app-user-detail>
+
+        in user detail component:
+        export class UserDetailComponent implements OnInit {
+            @Input() user?: User;
+            ....
+        }
