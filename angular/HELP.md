@@ -201,3 +201,9 @@ Creae new web worker
         <a routerLink="/heroes" routerLinkActive="active">Heroes</a>
     </nav>
     <router-outlet></router-outlet>
+
+19. Angular makes use of observables as an interface to handle a variety of common asynchronous operations
+    Angular’s HttpClient returns observables from HTTP method calls. For instance, http.get(‘/api’) returns an observable. 
+    HTTP requests are cancellable through the unsubscribe() method.
+
+20. The AsyncPipe subscribes to an observable or promise and returns the latest value it has emitted. When a new value is emitted, the pipe marks the component to be checked for changes.
