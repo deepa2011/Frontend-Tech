@@ -100,7 +100,18 @@ Create new service
 
 > ng generate service user
 
+Create new module
 
+> ng generate module my-module --routing
+
+Refactor routing configuration into a routing module
+
+> ng generate module app-routing --module app --flat
+
+
+Creae new web worker
+
+> ng generate web-worker app
 
 
 ## Directives
@@ -153,3 +164,40 @@ Create new service
             @Input() user?: User;
             ....
         }
+
+14. The *ngFor repeats hero objects. Notice that the *ngFor iterates over a list called users$. The $ is a convention that indicates users$ is an Observable, not an array.
+    <li *ngFor="let user of users$ | async" >
+
+15. routerLink directive connects the routes you defined to your template files.
+    <nav>
+        <a class="button" routerLink="/crisis-list">Crisis Center</a> |
+        <a class="button" routerLink="/users-list">Users</a>
+    </nav>
+
+16. By adding the routerLinkActive directive, you inform your application to apply a specific CSS class to the active route.
+    In the below example, "activebutton" is the CSS class
+    <nav>
+        <a class="button" routerLink="/crisis-list" routerLinkActive="activebutton">Crisis Center</a> |
+        <a class="button" routerLink="/users-list" routerLinkActive="activebutton">Users</a>
+    </nav>
+
+17. ** path is how Angular identifies a wildcard route. Any route that does not match an existing route in your configuration will use this route.
+    Ex., app.module.ts
+    imports: [
+        BrowserModule,
+        RouterModule.forRoot([
+            {path: 'crisis-list', component: CrisisListComponent},
+            {path: 'heroes-list', component: HeroesListComponent},
+            {path: '', redirectTo: '/heroes-list', pathMatch: 'full'},
+            {path: '**', component: PageNotFoundComponent}
+        ]),
+    ],
+
+18. The router outlet serves as a placeholder where the routed components are rendered.
+
+    Ex., app.component.ts
+    <nav>
+        <a routerLink="/crisis-center" routerLinkActive="active">Crisis Center</a>
+        <a routerLink="/heroes" routerLinkActive="active">Heroes</a>
+    </nav>
+    <router-outlet></router-outlet>
